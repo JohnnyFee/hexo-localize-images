@@ -1,13 +1,13 @@
 {
-  "name": "image2qiniu",
-  "version": "0.0.0",
+  "name": "hexo-image-images",
+  "version": "1.0.0",
   "description": "Download all images not in qiniu to the dist path, and modify the url in the posts.",
   "author": {
     "name": "JohnnyFee",
     "email": "djohnnyfee@gmail.com",
-    "url": "http://inching.org"
+    "url": "http://blog.inching.org"
   },
-  "repository": "JohnnyFee/image2qiniu",
+  "repository": "JohnnyFee/hexo-image-images",
   "bin": {
     "li": "bin/locale"
   },
@@ -16,9 +16,8 @@
     "index.js"
   ],
   "keywords": [
-    "image2qiniu",
-    "qiniu",
-    "image"
+    "download image",
+    "hexo"
   ],
   "dependencies": {
     "async": "^0.9.0",
