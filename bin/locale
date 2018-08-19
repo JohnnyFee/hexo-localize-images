@@ -1,0 +1,10 @@
+#!/usr/bin/env node
+
+'use strict';
+
+const localImage = require('../index');
+const fs = require('fs');
+
+localImage.locale(function () {
+
+});
