@@ -1,32 +1,5 @@
-#  [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-url]][daviddm-image]
+# Usage
 
-> The best module ever.
-
-
-## Install
-
-```sh
-$ npm install --save image2qiniu
-```
-
-
-## Usage
-
-```js
-var image2qiniu = require('image2qiniu');
-
-image2qiniu('Rainbow');
-```
-
-
-## License
-
-MIT © [JohnnyFee](http://inching.org)
-
-
-[npm-url]: https://npmjs.org/package/image2qiniu
-[npm-image]: https://badge.fury.io/js/image2qiniu.svg
-[travis-url]: https://travis-ci.org/JohnnyFee/image2qiniu
-[travis-image]: https://travis-ci.org/JohnnyFee/image2qiniu.svg?branch=master
-[daviddm-url]: https://david-dm.org/JohnnyFee/image2qiniu.svg?theme=shields.io
-[daviddm-image]: https://david-dm.org/JohnnyFee/image2qiniu
+1. Clone or Download the project.
+2. Install the tool globally. `npm install .`
+3. Use `li` command in your hexo blog root directory.
