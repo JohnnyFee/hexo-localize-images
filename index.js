@@ -1,13 +1,14 @@
 'use strict';
 
 const glob = require('glob');
-const fs = require('fs');
+const fs = require('fs-extra');
 const _ = require('lodash');
-const download = require('./download');
 const async = require('async');
 const path = require('path');
 const util = require('util');
 const url = require('url');
+
+var http = require('http');
 
 let options = {
     sourceFolder: path.join(process.cwd(), 'source/_posts'),
@@ -33,7 +34,7 @@ exports.locale = function (cb) {
         glob(path.join(options.sourceFolder, '*.md'), callback);
     }, function (files, callback) {
         // 替换每个文件中的 URL
-        async.each(files, exports.processArticle, callback);
+        async.eachLimit(files, 1, exports.processArticle, callback);
     }], function (error) {
         console.log('done.');
 
@@ -50,7 +51,7 @@ exports.processArticle = function (filePath, callback) {
     console.log('Process ' + path.basename(filePath) + ' ...');
 
     let downloadingImages = updateContentAndExtractImages(filePath);
-    async.each(downloadingImages, exports.downloadImage, callback);
+    async.eachLimit(downloadingImages, 1, exports.downloadImage, callback);
 };
 
 function extractImageFileName(imageUrl) {
@@ -59,6 +60,28 @@ function extractImageFileName(imageUrl) {
     return fileName.substr(fileName.lastIndexOf('/') + 1);
 }
 
+exports.download = function (url, destFoder, cb) {
+
+    if (!fs.existsSync(destFoder)){
+        fs.ensureDirSync(destFoder);
+    }
+
+    let dest = path.join(destFoder, extractImageFileName(url));
+
+
+    let file = fs.createWriteStream(dest);
+    http.get(url, function (response) {
+        response.pipe(file);
+        file.on('finish', function () {
+            file.close(cb);  // close() is async, call cb after close completes.
+        });
+    }).on('error', function (err) { // Handle errors
+        fs.unlink(dest); // Delete the file async. (But we don't check the result)
+        if (cb) {
+            cb(err.message);
+        }
+    });
+};
 
 // 下载和替换文件中的图片
 exports.downloadImage = function (img, callback) {
@@ -67,7 +90,8 @@ exports.downloadImage = function (img, callback) {
         return callback();
     }
 
-    download(img.url, {directory: options.imageFolder}, function (err) {
+    exports.download(img.url, options.imageFolder, function (err) {
+        console.log('Downloading ' + img.url + '...');
         if (err) {
             console.error(err);
             fs.appendFileSync(options.errorFile, img.url + require('os').EOL);
