@@ -7,8 +7,8 @@ const async = require('async');
 const path = require('path');
 const util = require('util');
 const url = require('url');
-
-var http = require('http');
+const https = require('https');
+const http = require('http');
 
 let options = {
     sourceFolder: path.join(process.cwd(), 'source/_posts'),
@@ -70,7 +70,13 @@ exports.download = function (url, destFoder, cb) {
 
 
     let file = fs.createWriteStream(dest);
-    http.get(url, function (response) {
+
+    let client = http;
+    if (url.indexOf('https') === 0){
+        client = https;
+    }
+
+    client.get(url, function (response) {
         response.pipe(file);
         file.on('finish', function () {
             file.close(cb);  // close() is async, call cb after close completes.

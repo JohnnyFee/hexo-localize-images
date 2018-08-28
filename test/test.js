@@ -17,4 +17,12 @@ describe('local image unit', function () {
             url: 'http://johnnyimages.qiniudn.com/1398314844css-box-model_collapsing-margins.png'
         }, done);
     });
+
+    it('download image https', function (done) {
+        localImage.downloadImage({
+            url: 'https://jingsourcing.com/wp-content/uploads/2018/08/yiwumap1.jpg'
+        }, done);
+    });
+
+
 });
